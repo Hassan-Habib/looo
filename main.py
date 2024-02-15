@@ -6,24 +6,19 @@ import base64
 
 app = Flask(__name__)
 
-import random
-
 
 def generate(number):
     vari = ''
-    replace_index = number.find('x')  # Find the index of the character to be replaced
-    if replace_index != -1:
-        vari += number[:replace_index]  # Append everything before the character to be replaced
-        vari += str(random.randint(0, 9))  # Replace 'x' with a random number
-        vari += number[replace_index + 1:]  # Append everything after the replaced character
-    else:
-        vari += number
+    tex = '0100000000xxxxxx1725073110ve090a#2127608752238'
+
+    # Replace 'xxxxxx' with the number provided by the client
+    tex = tex.replace('xxxxxx', str(number))
 
     # Find the index of the '#' symbol
-    hash_index = vari.find('#')
+    hash_index = tex.find('#')
     if hash_index != -1:
-        vari = vari[:hash_index + 1]  # Keep everything before the '#'
-        vari += ''.join([str(random.randint(0, 9)) for _ in range(13)])  # Generate 13 random numbers after the '#'
+        vari += tex[:hash_index + 1]  # Keep everything before the '#'
+        vari += ''.join([str(random.randint(0, 9)) for _ in range(13)])  # Generate 13 random digits after the '#'
 
     print(vari)
     return vari
