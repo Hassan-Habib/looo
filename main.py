@@ -3,9 +3,9 @@ from flask import Flask, request, render_template, jsonify
 import qrcode
 from io import BytesIO
 import base64
+from PIL import Image
 
 app = Flask(__name__)
-
 
 def generate(number):
     vari = ''
@@ -40,9 +40,12 @@ def handle_click():
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color="black", back_color="white")
 
+    # Convert QR code image to PIL Image
+    qr_pil_img = qr_img.get_image()
+
     # Save the QR code image to a BytesIO object
     qr_img_bytes_io = BytesIO()
-    qr_img.save(qr_img_bytes_io)  # Remove format='PNG' argument
+    qr_pil_img.save(qr_img_bytes_io, format='PNG')
     qr_img_bytes_io.seek(0)
 
     # Convert BytesIO object to base64 encoded string
@@ -50,7 +53,6 @@ def handle_click():
     qr_img_base64_encoded = "data:image/png;base64," + qr_img_base64
 
     return jsonify({'generated_text': generated_text, 'qr_code_image': qr_img_base64_encoded})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
