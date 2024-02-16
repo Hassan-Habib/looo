@@ -52,10 +52,8 @@
                 qrCodeContainer.innerHTML = ''; // Clear previous content
                 qrCodeContainer.appendChild(qrCodeImg);
 
+                // Copy generated text to clipboard
                 navigator.clipboard.writeText(generatedText)
-                .then(() => {
-                    alert('Generated value copied to clipboard: ' + generatedText);
-                })
                 .catch(error => {
                     console.error('Error copying to clipboard: ', error);
                 });
